@@ -53,7 +53,7 @@ function LoginForm() {
     // </main>
     <main className="page-shell">
       <div>Hello, World!</div>
-      <GNUIMap />
+      <GNUIMap north={51.52} south={51.50} east={-0.11} west={-0.15} />
     </main>
     
   );

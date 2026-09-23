@@ -2,11 +2,25 @@ import { MapContainer, TileLayer } from "react-leaflet";
 // Leaflet's stylesheet is provided by the package at runtime but has no TypeScript declarations.
 // @ts-expect-error -- side-effect CSS import
 import "leaflet/dist/leaflet.css";
+import { LatLngBoundsExpression } from "leaflet";
 
-export function GNUIMap() {
+type MapProps = {
+  north: number;
+  south: number;
+  east: number;
+  west: number;
+};
+
+export function GNUIMap({ north, south, east, west }: MapProps) {
+  // Leaflet coordinates are [latitude, longitude].
+  const bounds: LatLngBoundsExpression = [
+    [south, west], // southwest corner
+    [north, east], // northeast corner
+  ];
+
   return (
     <MapContainer
-      center={[51.5074, -0.1278]}
+      bounds={bounds}
       zoom={12}
       style={{ height: "600px", width: "100%" }}
     >
