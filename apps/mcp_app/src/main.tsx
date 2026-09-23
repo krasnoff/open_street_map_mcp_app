@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { App as McpApp } from "@modelcontextprotocol/ext-apps";
-import "./style.css";
+import "./style.scss";
 
 function LoginForm() {
   const [username, setUsername] = useState("");

@@ -115,7 +115,7 @@ TRANSPORT=stdio pnpm start
 The main files are:
 
 - `src/main.tsx` — React interface and client-side behavior
-- `src/style.css` — UI styling
+- `src/style.scss` — UI styling
 - `server.ts` — MCP tool and UI resource registration
 - `main.ts` — HTTP and stdio transports
 - `vite.config.ts` — browser UI build configuration

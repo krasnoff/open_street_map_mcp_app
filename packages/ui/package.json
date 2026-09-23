@@ -8,7 +8,7 @@
       "types": "./src/index.ts",
       "default": "./src/index.ts"
     },
-    "./styles.css": "./src/styles.css"
+    "./styles.scss": "./src/styles.scss"
   },
   "peerDependencies": {
     "react": "^19.0.0",
