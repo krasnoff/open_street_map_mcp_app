@@ -1,4 +1,6 @@
 import { MapContainer, TileLayer } from "react-leaflet";
+// Leaflet's stylesheet is provided by the package at runtime but has no TypeScript declarations.
+// @ts-expect-error -- side-effect CSS import
 import "leaflet/dist/leaflet.css";
 
 export function GNUIMap() {
