@@ -4,7 +4,7 @@ import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/
 import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import { createServer } from "./server.js";
 import { randomUUID } from "node:crypto";
-import cors from "cors";
+// import cors from "cors";
 
 async function runStdio() {
   const server = createServer();
@@ -22,7 +22,7 @@ function runHttp() {
     publicHost,
   ];
   const app = createMcpExpressApp({ allowedHosts });
-  app.use(cors({ origin: "*", exposedHeaders: ["Mcp-Session-Id"] }));
+  // app.use(cors({ origin: "*", exposedHeaders: ["Mcp-Session-Id"] }));
   const transports = new Map<string, StreamableHTTPServerTransport>();
 
   app.post("/mcp", async (req, res) => {
