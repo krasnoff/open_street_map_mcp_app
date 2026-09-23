@@ -1,9 +1,9 @@
-export const NOMINATIM_SEARCH_URL = "https://nominatim.openstreetmap.org/search";
-export const NOMINATIM_USER_AGENT = process.env.NOMINATIM_USER_AGENT ?? "openstreetmap-mcp-app/1.0";
+const NOMINATIM_SEARCH_URL = "https://nominatim.openstreetmap.org/search";
+const NOMINATIM_USER_AGENT = process.env.NOMINATIM_USER_AGENT ?? "openstreetmap-mcp-app/1.0";
 
-export const geocodingCache = new Map<string, GeocodingResult>();
+const geocodingCache = new Map<string, GeocodingResult>();
 
-export type GeocodingResult = {
+type GeocodingResult = {
   displayName: string;
   latitude: number;
   longitude: number;
@@ -13,9 +13,9 @@ export type GeocodingResult = {
   west: number;
 };
 
-export let nextNominatimRequestAt = 0;
+let nextNominatimRequestAt = 0;
 
-export async function waitForNominatimRateLimit() {
+async function waitForNominatimRateLimit() {
   const now = Date.now();
   const delay = Math.max(0, nextNominatimRequestAt - now);
   nextNominatimRequestAt = now + delay + 1_000;
@@ -25,7 +25,7 @@ export async function waitForNominatimRateLimit() {
   }
 }
 
-export function parseCoordinate(value: unknown, minimum: number, maximum: number) {
+function parseCoordinate(value: unknown, minimum: number, maximum: number) {
   const coordinate = typeof value === "string" ? Number(value) : Number.NaN;
   return Number.isFinite(coordinate) && coordinate >= minimum && coordinate <= maximum
     ? coordinate
