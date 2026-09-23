@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { registerAppResource, registerAppTool, RESOURCE_MIME_TYPE } from "@modelcontextprotocol/ext-apps/server";
 import { z } from "zod";
+import { geocodePlace } from "../../packages/utils/utils";
 
 const RESOURCE_URI = "ui://map/app.html";
 const MODULE_DIRECTORY = dirname(fileURLToPath(import.meta.url));
@@ -14,6 +15,51 @@ const APP_HTML_PATH = resolve(
 
 export function createServer() {
   const server = new McpServer({ name: "openstreetmap-viewer", version: "1.0.0" });
+
+  server.registerTool("geocode-place", {
+    title: "Find place coordinates",
+    description: "Convert a place name into coordinates and geographic bounds. Pass north, south, east, and west from the result to the open-map tool.",
+    inputSchema: {
+      placeName: z.string().trim().min(1).max(300).describe("Place to find, for example: Paris, France"),
+    },
+    outputSchema: {
+      displayName: z.string(),
+      latitude: z.number().min(-90).max(90),
+      longitude: z.number().min(-180).max(180),
+      north: z.number().min(-90).max(90),
+      south: z.number().min(-90).max(90),
+      east: z.number().min(-180).max(180),
+      west: z.number().min(-180).max(180),
+    },
+    annotations: {
+      readOnlyHint: true,
+      openWorldHint: true,
+    },
+  }, async ({ placeName }) => {
+    try {
+      const result = await geocodePlace(placeName);
+      if (!result) {
+        return {
+          content: [{ type: "text", text: `No place was found for “${placeName}”.` }],
+          isError: true,
+        };
+      }
+
+      return {
+        content: [{
+          type: "text",
+          text: `Found ${result.displayName}. Use north ${result.north}, south ${result.south}, east ${result.east}, and west ${result.west} with open-map.`,
+        }],
+        structuredContent: result,
+      };
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown geocoding error.";
+      return {
+        content: [{ type: "text", text: `Could not geocode “${placeName}”: ${message}` }],
+        isError: true,
+      };
+    }
+  });
 
   registerAppTool(server, "open-map", {
     title: "Open map",
