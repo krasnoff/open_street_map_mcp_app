@@ -7,7 +7,7 @@ pnpm install
 pnpm dev
 ```
 
-Open http://localhost:5173 (mcp_app) and http://localhost:5174 (apps_sdk).
+The MCP app endpoint is http://localhost:3001/mcp. The apps_sdk UI is available at http://localhost:5174.
 
 ```bash
 pnpm typecheck
