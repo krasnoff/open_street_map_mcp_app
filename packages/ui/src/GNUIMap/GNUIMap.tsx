@@ -1,6 +1,6 @@
 import { MapContainer, TileLayer } from "react-leaflet";
-// Leaflet's stylesheet is provided by the package at runtime but has no TypeScript declarations.
-// @ts-expect-error -- side-effect CSS import
+// The stylesheet is loaded by the bundler; TypeScript does not have declarations for CSS files.
+// @ts-ignore
 import "leaflet/dist/leaflet.css";
 import { LatLngBoundsExpression } from "leaflet";
 

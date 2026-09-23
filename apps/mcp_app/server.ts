@@ -17,13 +17,21 @@ export function createServer() {
 
   registerAppTool(server, "open-map", {
     title: "Open map",
-    description: "Display an interactive OpenStreetMap map.",
-    inputSchema: {},
+    description: "Display an interactive OpenStreetMap map for the supplied geographic bounds.",
+    inputSchema: {
+      north: z.number().min(-90).max(90).describe("Northern latitude of the map bounds"),
+      south: z.number().min(-90).max(90).describe("Southern latitude of the map bounds"),
+      east: z.number().min(-180).max(180).describe("Eastern longitude of the map bounds"),
+      west: z.number().min(-180).max(180).describe("Western longitude of the map bounds"),
+    },
     outputSchema: { ready: z.boolean() },
     _meta: { ui: { resourceUri: RESOURCE_URI } },
-  }, async () => {
+  }, async ({ north, south, east, west }) => {
     return {
-      content: [{ type: "text", text: "Interactive map opened." }],
+      content: [{
+        type: "text",
+        text: `Interactive map opened for bounds north ${north}, south ${south}, east ${east}, west ${west}.`,
+      }],
       structuredContent: { ready: true },
     };
   });

@@ -1,16 +1,47 @@
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { App as McpApp } from "@modelcontextprotocol/ext-apps";
 import "./style.scss";
 import { GNUIMap } from "@workspace/ui";
 
-function LoginForm() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+type MapBounds = {
+  north: number;
+  south: number;
+  east: number;
+  west: number;
+};
+
+const DEFAULT_BOUNDS: MapBounds = {
+  north: 51.52,
+  south: 51.5,
+  east: -0.11,
+  west: -0.15,
+};
+
+function isMapBounds(value: unknown): value is MapBounds {
+  if (!value || typeof value !== "object") return false;
+
+  const bounds = value as Record<string, unknown>;
+  return ["north", "south", "east", "west"].every(
+    (key) => typeof bounds[key] === "number" && Number.isFinite(bounds[key]),
+  );
+}
+
+function MapApp() {
+  const [bounds, setBounds] = useState<MapBounds>(DEFAULT_BOUNDS);
   const [status, setStatus] = useState("");
 
   useEffect(() => {
-    const app = new McpApp({ name: "Sign in form", version: "1.0.0" });
+    const app = new McpApp({ name: "OpenStreetMap viewer", version: "1.0.0" });
+
+    app.ontoolinput = (input) => {
+      if (isMapBounds(input.arguments)) {
+        setBounds(input.arguments);
+        setStatus("");
+      } else {
+        setStatus("The map bounds supplied by the host are invalid.");
+      }
+    };
 
     app.onhostcontextchanged = (context) => {
       document.documentElement.dataset.theme = context.theme ?? "light";
@@ -23,42 +54,14 @@ function LoginForm() {
 
   }, []);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setStatus(`Form submitted for ${username}.`);
-    setPassword("");
-  }
-
   return (
-    // <main className="page-shell">
-    //   <section className="login-card" aria-labelledby="login-title">
-    //     <header>
-    //       <p className="eyebrow">Welcome back</p>
-    //       <h1 id="login-title">Sign in</h1>
-    //       <p className="intro">Enter your account details to continue.</p>
-    //     </header>
-
-    //     <form onSubmit={handleSubmit}>
-    //       <label htmlFor="username">Username</label>
-    //       <input id="username" name="username" type="text" autoComplete="username" value={username} onChange={(event) => setUsername(event.target.value)} required />
-
-    //       <label htmlFor="password">Password</label>
-    //       <input id="password" name="password" type="password" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} required />
-
-    //       <button type="submit">Sign in 2</button>
-    //     </form>
-
-    //     <p className="status" role="status" aria-live="polite">{status}</p>
-    //   </section>
-    // </main>
     <main className="page-shell">
-      <div>Hello, World!</div>
-      <GNUIMap north={51.52} south={51.50} east={-0.11} west={-0.15} />
+      {status && <p className="status" role="status">{status}</p>}
+      <GNUIMap {...bounds} />
     </main>
-    
   );
 }
 
 const root = document.querySelector<HTMLElement>("#app");
 if (!root) throw new Error("Missing #app root element");
-createRoot(root).render(<LoginForm />);
+createRoot(root).render(<MapApp />);
