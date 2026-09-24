@@ -1,17 +1,10 @@
-import { readFile } from "node:fs/promises";
-import { basename, dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { registerAppResource, registerAppTool, RESOURCE_MIME_TYPE } from "@modelcontextprotocol/ext-apps/server";
 import { z } from "zod";
 import { geocodePlace } from "@workspace/utils";
+import appHtml from "./generated/app-html.js";
 
 const RESOURCE_URI = "ui://map/app.html";
-const MODULE_DIRECTORY = dirname(fileURLToPath(import.meta.url));
-const APP_HTML_PATH = resolve(
-  MODULE_DIRECTORY,
-  basename(MODULE_DIRECTORY) === "dist-server" ? "../dist/index.html" : "dist/index.html",
-);
 
 export function createServer() {
   const server = new McpServer({ name: "openstreetmap-viewer", version: "1.0.0" });
@@ -88,7 +81,7 @@ export function createServer() {
     contents: [{
       uri: RESOURCE_URI,
       mimeType: RESOURCE_MIME_TYPE,
-      text: await readFile(APP_HTML_PATH, "utf8"),
+      text: appHtml,
       _meta: { ui: { domain: "openstreetmap-viewer", csp: { resourceDomains: ["https://tile.openstreetmap.org"] } } },
     }],
   }));

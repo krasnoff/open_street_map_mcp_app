@@ -5,11 +5,11 @@
   "private": true,
   "main": "dist-server/main.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development concurrently -k \"vite build --watch\" \"tsx watch main.ts\"",
-    "build": "vite build && tsc -p tsconfig.server.json",
-    "serve": "node dist-server/main.js",
-    "start": "tsx main.ts",
-    "typecheck": "tsc --noEmit && tsc -p tsconfig.server.json --noEmit"
+    "dev": "tsx watch main.ts",
+    "build:ui": "vite build",
+    "generate:html": "tsx scripts/generate-html.ts",
+    "build:server": "tsc -p tsconfig.server.json",
+    "build": "pnpm build:ui && pnpm generate:html && pnpm build:server"
   },
   "keywords": [],
   "author": "",
