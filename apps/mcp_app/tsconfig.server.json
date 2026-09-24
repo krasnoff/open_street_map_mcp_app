@@ -9,5 +9,11 @@
     "types": ["node"],
     "skipLibCheck": true
   },
-  "include": ["main.ts", "server.ts"]
+  "include": [
+    "main.ts",
+    "mcp.ts",
+    "server.ts",
+    "api/**/*.ts",
+    "generated/**/*.ts"
+  ]
 }
