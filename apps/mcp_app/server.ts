@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { registerAppResource, registerAppTool, RESOURCE_MIME_TYPE } from "@modelcontextprotocol/ext-apps/server";
 import { z } from "zod";
-import { geocodePlace } from "../../packages/utils/utils";
+import { geocodePlace } from "@workspace/utils";
 
 const RESOURCE_URI = "ui://map/app.html";
 const MODULE_DIRECTORY = dirname(fileURLToPath(import.meta.url));

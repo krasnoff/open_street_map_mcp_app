@@ -19,6 +19,7 @@
     "@modelcontextprotocol/ext-apps": "^1.7.5",
     "@modelcontextprotocol/sdk": "^1.30.0",
     "@workspace/ui": "workspace:*",
+    "@workspace/utils": "workspace:*",
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "react": "^19.2.8",

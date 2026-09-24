@@ -1,0 +1,9 @@
+{
+    "name": "@workspace/utils",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "exports": {
+        ".": "./utils.ts"
+    }
+}
