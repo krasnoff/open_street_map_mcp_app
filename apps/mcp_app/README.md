@@ -52,6 +52,9 @@ The MCP endpoint is available at:
 http://localhost:3001/mcp
 ```
 
+The local entry point is `mcp.ts`. It starts the shared Hono app with
+`@hono/node-server` and binds only to `127.0.0.1`.
+
 The development command rebuilds the UI when files change and restarts the server when its TypeScript files change.
 
 ## Build and run
@@ -130,13 +133,16 @@ When adapting the template:
 
 ## Public hosting
 
-For remote use, deploy the built Node.js server behind HTTPS and expose its `/mcp` route. Set `PUBLIC_HOST` to the public hostname without a protocol:
+The Vercel Function entry point is `api/mcp.ts`; after deployment its endpoint is:
 
-```bash
-PUBLIC_HOST=mcp.example.com pnpm serve
+```text
+https://YOUR_PROJECT.vercel.app/api/mcp
 ```
 
-`PUBLIC_HOST` is used by the server's host and origin protection. Update the defaults and security policy in `main.ts` for your deployment, especially if the UI loads assets or communicates with additional domains.
+Both entry points use `http.ts`, which creates the small Hono HTTP layer. MCP
+tools and resources are registered once by `registerServer` in `server.ts`.
+HTTP requests use a fresh, stateless MCP server and transport so a Vercel
+invocation never depends on an in-memory session created by another invocation.
 
 ## Scripts
 

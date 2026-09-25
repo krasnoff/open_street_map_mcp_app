@@ -6,9 +6,7 @@ import appHtml from "./generated/app-html.js";
 
 const RESOURCE_URI = "ui://map/app.html";
 
-export function createServer() {
-  const server = new McpServer({ name: "openstreetmap-viewer", version: "1.0.0" });
-
+export function registerServer(server: McpServer) {
   server.registerTool("geocode-place", {
     title: "Find place coordinates",
     description: "Convert a place name into coordinates and geographic bounds. Pass north, south, east, and west from the result to the open-map tool.",
@@ -87,4 +85,10 @@ export function createServer() {
   }));
 
   return server;
+}
+
+export function createServer() {
+  return registerServer(
+    new McpServer({ name: "openstreetmap-viewer", version: "1.0.0" }),
+  );
 }

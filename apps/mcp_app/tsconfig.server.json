@@ -10,8 +10,8 @@
     "skipLibCheck": true
   },
   "include": [
-    "main.ts",
     "mcp.ts",
+    "http.ts",
     "server.ts",
     "api/**/*.ts",
     "generated/**/*.ts"
