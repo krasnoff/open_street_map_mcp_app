@@ -139,6 +139,24 @@ The Vercel Function entry point is `api/mcp.ts`; after deployment its endpoint i
 https://YOUR_PROJECT.vercel.app/api/mcp
 ```
 
+The shorter URL below is also available through the rewrite in `vercel.json`:
+
+```text
+https://YOUR_PROJECT.vercel.app/mcp
+```
+
+### Vercel project settings
+
+Import the repository as a monorepo project, then configure:
+
+- **Root Directory:** `apps/mcp_app`
+- **Include source files outside of the Root Directory:** enabled
+- **Framework Preset:** Other
+
+Keep the install, build, and output settings inherited from `vercel.json`. The
+outside-source option is required because this app imports `packages/ui` and
+`packages/utils` through the pnpm workspace.
+
 Both entry points use `http.ts`, which creates the small Hono HTTP layer. MCP
 tools and resources are registered once by `registerServer` in `server.ts`.
 HTTP requests use a fresh, stateless MCP server and transport so a Vercel
