@@ -3,4 +3,5 @@ dist/
 dist-server/
 *.log
 .DS_Store
-generated/
+generated/*
+!generated/app-html.ts
