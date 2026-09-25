@@ -1,8 +1,8 @@
 import { StreamableHTTPTransport } from "@hono/mcp";
-import { Hono } from "hono";
+import { Hono, type Handler } from "hono";
 import { createServer } from "./server.js";
 
-export function createHttpApp(mcpPath = "/mcp") {
+export function createHttpApp(mcpPaths: string | string[] = "/mcp") {
   const app = new Hono();
 
   app.get("/", (context) => context.json({
@@ -10,7 +10,7 @@ export function createHttpApp(mcpPath = "/mcp") {
     mcp: "/mcp",
   }));
 
-  app.all(mcpPath, async (context) => {
+  const handleMcpRequest: Handler = async (context) => {
     const server = createServer();
     const transport = new StreamableHTTPTransport({
       sessionIdGenerator: undefined,
@@ -34,7 +34,11 @@ export function createHttpApp(mcpPath = "/mcp") {
         id: null,
       }, 500);
     }
-  });
+  };
+
+  for (const path of Array.isArray(mcpPaths) ? mcpPaths : [mcpPaths]) {
+    app.all(path, handleMcpRequest);
+  }
 
   return app;
 }
