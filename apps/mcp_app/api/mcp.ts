@@ -1,6 +1,6 @@
-import { handle } from "hono/vercel";
+import { getRequestListener } from "@hono/node-server";
 import { createHttpApp } from "../http.js";
 
 const app = createHttpApp("/api/mcp");
 
-export default handle(app);
+export default getRequestListener(app.fetch);
