@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { registerAppResource, registerAppTool, RESOURCE_MIME_TYPE } from "@modelcontextprotocol/ext-apps/server";
 import { z } from "zod";
-import { geocodePlace } from "@workspace/utils";
+import { geocodePlace } from "./geocode.js";
 import appHtml from "./generated/app-html.js";
 
 const RESOURCE_URI = "ui://map/app.html";

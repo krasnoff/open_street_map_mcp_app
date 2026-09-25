@@ -12,6 +12,7 @@
   "include": [
     "mcp.ts",
     "http.ts",
+    "geocode.ts",
     "server.ts",
     "api/**/*.ts",
     "generated/**/*.ts"
