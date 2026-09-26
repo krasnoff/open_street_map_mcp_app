@@ -4,7 +4,8 @@ import { z } from "zod";
 import { geocodePlace } from "./geocode.js";
 import appHtml from "./generated/app-html.js";
 
-const RESOURCE_URI = "ui://map/app.html";
+// const RESOURCE_URI = "ui://map/app.html";
+const RESOURCE_URI = "https://open-street-map-mcp-app-apps-sdk.vercel.app/app.html";
 
 export function registerServer(server: McpServer) {
   server.registerTool("geocode-place", {
