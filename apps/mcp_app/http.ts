@@ -4,11 +4,31 @@ import { createServer } from "./server.js";
 
 export function createHttpApp(mcpPaths: string | string[] = "/mcp") {
   const app = new Hono();
+  const paths = Array.isArray(mcpPaths) ? mcpPaths : [mcpPaths];
 
   app.get("/", (context) => context.json({
     name: "openstreetmap-viewer",
     mcp: "/mcp",
   }));
+
+  for (const path of paths) {
+    app.use(path, async (context, next) => {
+      await next();
+      context.header("Access-Control-Allow-Origin", "*");
+      context.header("Access-Control-Expose-Headers", "Mcp-Session-Id");
+    });
+
+    app.options(path, (context) => {
+      context.header("Access-Control-Allow-Origin", "*");
+      context.header("Access-Control-Allow-Methods", "POST, GET, DELETE, OPTIONS");
+      context.header(
+        "Access-Control-Allow-Headers",
+        "content-type, accept, mcp-protocol-version, mcp-session-id",
+      );
+      context.header("Access-Control-Expose-Headers", "Mcp-Session-Id");
+      return context.body(null, 204);
+    });
+  }
 
   const handleMcpRequest: Handler = async (context) => {
     const server = createServer();
@@ -36,7 +56,7 @@ export function createHttpApp(mcpPaths: string | string[] = "/mcp") {
     }
   };
 
-  for (const path of Array.isArray(mcpPaths) ? mcpPaths : [mcpPaths]) {
+  for (const path of paths) {
     app.all(path, handleMcpRequest);
   }
 
