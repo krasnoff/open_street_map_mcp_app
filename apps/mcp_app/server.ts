@@ -89,7 +89,15 @@ export function registerServer(server: McpServer) {
       uri: RESOURCE_URI,
       mimeType: RESOURCE_MIME_TYPE,
       text: appHtml, //await readFile(APP_HTML_PATH, "utf8"),
-      _meta: { ui: { domain: "openstreetmap-viewer", csp: { resourceDomains: ["https://tile.openstreetmap.org"] } } },
+      _meta: {
+        ui: {
+          // this line is for debugging with mcp inspector only, but it is not needed for the app to work
+          // domain: "openstreetmap-viewer",
+          csp: {
+            resourceDomains: ["https://tile.openstreetmap.org"],
+          },
+        },
+      },
     }],
   }));
 
