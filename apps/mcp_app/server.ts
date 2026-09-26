@@ -88,7 +88,7 @@ export function registerServer(server: McpServer) {
     contents: [{
       uri: RESOURCE_URI,
       mimeType: RESOURCE_MIME_TYPE,
-      text: await readFile(APP_HTML_PATH, "utf8"),
+      text: appHtml, //await readFile(APP_HTML_PATH, "utf8"),
       _meta: { ui: { domain: "openstreetmap-viewer", csp: { resourceDomains: ["https://tile.openstreetmap.org"] } } },
     }],
   }));
