@@ -1,4 +1,5 @@
-import { MapContainer, TileLayer } from "react-leaflet";
+import { useEffect } from "react";
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
 // The stylesheet is loaded by the bundler; TypeScript does not have declarations for CSS files.
 // @ts-ignore
 import "leaflet/dist/leaflet.css";
@@ -11,6 +12,16 @@ type MapProps = {
   west: number;
 };
 
+function MapBounds({ bounds }: { bounds: LatLngBoundsExpression }) {
+  const map = useMap();
+
+  useEffect(() => {
+    map.fitBounds(bounds);
+  }, [bounds, map]);
+
+  return null;
+}
+
 export function GNUIMap({ north, south, east, west }: MapProps) {
   // Leaflet coordinates are [latitude, longitude].
   const bounds: LatLngBoundsExpression = [
@@ -21,9 +32,9 @@ export function GNUIMap({ north, south, east, west }: MapProps) {
   return (
     <MapContainer
       bounds={bounds}
-      zoom={12}
       style={{ height: "600px", width: "100%" }}
     >
+      <MapBounds bounds={bounds} />
       <TileLayer
         url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
         referrerPolicy="origin"

@@ -3,8 +3,17 @@ import { registerAppResource, registerAppTool, RESOURCE_MIME_TYPE } from "@model
 import { z } from "zod";
 import { geocodePlace } from "./geocode.js";
 import appHtml from "./generated/app-html.js";
+import { readFile } from "node:fs/promises";
+import { basename, dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const RESOURCE_URI = "ui://map/app.html";
+
+const MODULE_DIRECTORY = dirname(fileURLToPath(import.meta.url));
+const APP_HTML_PATH = resolve(
+  MODULE_DIRECTORY,
+  basename(MODULE_DIRECTORY) === "dist-server" ? "../dist/index.html" : "dist/index.html",
+);
 
 export function registerServer(server: McpServer) {
   server.registerTool("geocode-place", {
@@ -79,7 +88,7 @@ export function registerServer(server: McpServer) {
     contents: [{
       uri: RESOURCE_URI,
       mimeType: RESOURCE_MIME_TYPE,
-      text: appHtml,
+      text: await readFile(APP_HTML_PATH, "utf8"),
       _meta: { ui: { domain: "openstreetmap-viewer", csp: { resourceDomains: ["https://tile.openstreetmap.org"] } } },
     }],
   }));
